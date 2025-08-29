@@ -85,7 +85,7 @@ Generated simulations include:
 ## Dependencies
 
 - OpenAI agents framework
-- `@simulators/lib`: Core simulation framework
+- `@sim-generator/lib`: Core simulation framework
 - TypeScript compilation and project management tools
 
 This project was created using `bun init` in bun v1.2.8. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

@@ -1,8 +1,8 @@
 export class Logger {
-  private verbose = false;
+  private isVerboseMode = false;
 
   setVerbose(verbose: boolean): void {
-    this.verbose = verbose;
+    this.isVerboseMode = verbose;
   }
 
   info(message: string, ...args: any[]): void {
@@ -10,7 +10,7 @@ export class Logger {
   }
 
   verbose(message: string, ...args: any[]): void {
-    if (this.verbose) {
+    if (this.isVerboseMode) {
       console.log(`🔍 ${message}`, ...args);
     }
   }

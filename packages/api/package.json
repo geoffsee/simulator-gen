@@ -1,18 +1,16 @@
 {
-  "name": "sim-generator",
+  "name": "@sim-generator/api",
   "module": "index.ts",
   "type": "module",
   "private": true,
-  "workspaces": [
-    "packages/lib",
-    "packages/api",
-    "packages/sim-generator",
-    "packages/examples/legal-sim"
-  ],
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "graphql": "^16.11.0",
+    "graphql-yoga": "^5.15.1"
   }
 }

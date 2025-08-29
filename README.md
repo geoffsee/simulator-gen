@@ -1,17 +1,15 @@
 # Simulators Framework
 
-This repository contains a generic simulation framework and domain-specific implementations, starting with a legal review simulation.
+This repository contains a generic simulation framework and domain-specific implementations.
+The project has been restructured to extract common simulation patterns into a reusable framework that can be applied to different domains while maintaining the specific functionality of existing simulations.
 
 ## Overview
 
 The project consists of four main packages that work together to provide a comprehensive simulation ecosystem:
 
-- **`@simulators/lib`**: Core simulation framework with generic state machines, event processing, and simulation engine
-- **`@simulators/legal-sim`**: Legal review simulation demonstrating domain-specific framework implementation
-- **`@simulators/sim-generator`**: AI-powered CLI tool for generating new simulations from natural language descriptions
-- **`@simulators/client`**: React-based web client providing API testing and simulation monitoring interfaces
-
-The project has been restructured to extract common simulation patterns into a reusable framework that can be applied to different domains while maintaining the specific functionality of existing simulations.
+- **`@sim-generator/lib`**: Core simulation framework with generic state machines, event processing, and simulation engine
+- **`@sim-generator/sim-generator`**: AI-powered CLI tool for generating new simulations from natural language descriptions
+- **`@simulators/api`**: A graphQL library that offers an interface for remote management of simulations
 
 ## Architecture
 
@@ -49,7 +47,7 @@ import {
   SimulationEngine, 
   Event, 
   EventGenerator 
-} from '@simulators/lib';
+} from '@sim-generator/lib';
 
 // Define domain-specific types
 enum GameState {
@@ -102,7 +100,7 @@ engine.start({
 For simpler use cases, the framework provides a convenient factory function:
 
 ```typescript
-import { createSimulation } from '@simulators/lib';
+import { createSimulation } from '@sim-generator/lib';
 
 // Create simulation with factory function
 const simulation = createSimulation<GameState, GameEvent>({
@@ -140,28 +138,6 @@ The legal simulation has been reimplemented using the generic framework while ma
 - **Task Management**: Automatic task generation based on events
 - **Evidence Tracking**: Document and communication evidence management
 - **Deadline Management**: Hard and soft deadline tracking with notifications
-
-### Running the Legal Simulation
-
-```bash
-# Navigate to the simulators directory
-cd simulators
-
-# Run the legal simulation
-bun run packages/legal-sim/main.ts
-```
-
-### Legal Simulation Structure
-
-```
-packages/legal-sim/
-├── main.ts                    # Entry point (updated to use framework)
-├── src/
-│   ├── index.ts              # Exports (updated to use framework)
-│   ├── legal-sim-framework.ts # New framework-based implementation
-│   └── test-framework.ts      # Test script for verification
-└── package.json
-```
 
 ## Simulation Generator (`packages/sim-generator`)
 
@@ -226,30 +202,6 @@ cd packages/client && bun start
 - Efficient event processing and state management
 - Configurable timing and resource usage
 
-## Migration Summary
-
-The legal simulation was successfully migrated from a mobx-state-tree implementation to the new framework:
-
-### Before (Original Implementation)
-- **617 lines** of domain-specific code mixed with simulation logic
-- Direct dependency on mobx-state-tree
-- All simulation logic embedded in domain code
-- Difficult to reuse patterns for other domains
-
-### After (Framework-based Implementation)
-- **Framework**: ~800 lines of reusable simulation infrastructure
-- **Legal Simulation**: ~500 lines of domain-specific logic
-- Clean separation of concerns
-- Easy to create new domain simulations
-- Backward compatibility maintained
-
-### Key Improvements
-1. **Extracted reusable patterns** into generic framework components
-2. **Maintained all functionality** of the original legal simulation
-3. **Improved code organization** with clear separation between framework and domain logic
-4. **Enhanced testing capabilities** with dedicated test infrastructure
-5. **Better documentation** and usage examples
-
 ## Testing
 
 Both the framework and legal simulation include comprehensive testing:
@@ -262,40 +214,14 @@ bun run packages/legal-sim/src/test-framework.ts
 bun run packages/legal-sim/main.ts
 ```
 
-## Future Enhancements
-
-The framework is designed to support additional simulation domains:
-
-### Potential New Domains
+## Potential Domains
 - **Medical Workflow Simulation**: Patient care processes, treatment protocols
 - **Manufacturing Process Simulation**: Production lines, quality control
 - **Financial Trading Simulation**: Market events, trading strategies
 - **Project Management Simulation**: Task dependencies, resource allocation
 
-### Framework Extensions
-- **Persistence Layer**: Save/restore simulation state
+## Future Enhancements
+The framework is designed to support additional simulation domains:
 - **Visualization**: Real-time simulation visualization
 - **Analytics**: Advanced metrics and reporting
 - **Networking**: Multi-node distributed simulations
-
-## Dependencies
-
-### Framework (`@simulators/lib`)
-- **Zero external dependencies** - Pure TypeScript implementation
-- Compatible with Node.js and Bun runtimes
-
-### Legal Simulation (`@simulators/legal-sim`)
-- Depends on `@simulators/lib` framework
-- No additional external dependencies (mobx-state-tree removed)
-
-## Contributing
-
-When adding new simulation domains:
-
-1. Create a new package in `packages/[domain-name]`
-2. Extend `BaseStateMachine` for domain-specific state management
-3. Define domain-specific event types and handlers
-4. Create event generators for realistic simulation data
-5. Add comprehensive tests and documentation
-
-The framework is designed to be extended without modification, following the open/closed principle.

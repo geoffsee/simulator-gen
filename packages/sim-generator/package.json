@@ -1,5 +1,5 @@
 {
-  "name": "sim-generator",
+  "name": "@sim-generator/sim-generator",
   "version": "1.0.0",
   "description": "AI-powered simulation generator CLI using OpenAI agents",
   "main": "dist/index.js",

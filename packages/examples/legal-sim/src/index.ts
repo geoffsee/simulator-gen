@@ -7,7 +7,7 @@
  */
 
 // Export the new framework-based implementation
-export * from './legal-sim-framework.js';
+export * from './legal-sim-framework';
 
 // For backward compatibility, also export with the original names
 export {
@@ -15,4 +15,4 @@ export {
   startRealtimeFeed,
   LegalReviewStateMachine as ILegalReviewMachine,
   LEGAL_EVENT_GENERATORS
-} from './legal-sim-framework.js';
+} from './legal-sim-framework';

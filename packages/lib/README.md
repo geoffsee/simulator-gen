@@ -4,7 +4,7 @@ The core simulation framework that provides generic, reusable components for bui
 
 ## Overview
 
-The `@simulators/lib` package provides a comprehensive framework for building state-machine-based simulations with event processing, timing controls, and extensible architecture. It's designed to be domain-agnostic while providing all the necessary building blocks for complex simulation scenarios.
+The `@sim-generator/lib` package provides a comprehensive framework for building state-machine-based simulations with event processing, timing controls, and extensible architecture. It's designed to be domain-agnostic while providing all the necessary building blocks for complex simulation scenarios.
 
 ## Features
 
@@ -27,7 +27,7 @@ The `@simulators/lib` package provides a comprehensive framework for building st
 ## Installation
 
 ```bash
-bun install @simulators/lib
+bun install @sim-generator/lib
 ```
 
 ## Quick Start
@@ -35,7 +35,7 @@ bun install @simulators/lib
 ### Using the Factory Function
 
 ```typescript
-import { createSimulation } from '@simulators/lib';
+import { createSimulation } from '@sim-generator/lib';
 
 // Define your domain types
 enum GameState {
@@ -77,7 +77,7 @@ import {
   SimulationEngine,
   Event,
   EventGenerator 
-} from '@simulators/lib';
+} from '@sim-generator/lib';
 
 // Create custom state machine
 class GameStateMachine extends BaseStateMachine<GameState, GameEvent> {

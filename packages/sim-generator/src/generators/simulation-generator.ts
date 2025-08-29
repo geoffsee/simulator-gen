@@ -1,6 +1,7 @@
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { GenerationResult, GeneratedFile } from '../agents/types.js';
+import { simulationRegistry } from '../utils/simulation-registry.js';
 
 export interface BasicProjectConfig {
   name: string;
@@ -10,8 +11,20 @@ export interface BasicProjectConfig {
 
 export class SimulationGenerator {
   
-  async createSimulationPackage(result: GenerationResult): Promise<void> {
+  async createSimulationPackage(result: GenerationResult, description: string = '', template: string = 'generic'): Promise<string> {
     const packageDir = join(result.outputDir, result.simulationName);
+    
+    // Register simulation and get UUID
+    const uuid = simulationRegistry.registerSimulation(
+      result.simulationName,
+      description,
+      result.outputDir,
+      template,
+      result
+    );
+    
+    // Assign UUID to the result
+    result.uuid = uuid;
     
     // Create the main package directory
     this.ensureDirectory(packageDir);
@@ -34,7 +47,25 @@ export class SimulationGenerator {
     this.ensureDirectory(join(packageDir, 'src'));
     this.ensureDirectory(join(packageDir, 'dist'));
     
+    // Create a metadata file with UUID for easy reference
+    const metadataFile = {
+      uuid,
+      name: result.simulationName,
+      description,
+      createdAt: new Date().toISOString(),
+      template,
+      version: '1.0.0'
+    };
+    
+    writeFileSync(
+      join(packageDir, '.simulation-meta.json'),
+      JSON.stringify(metadataFile, null, 2)
+    );
+    
     console.log(`\n📦 Package created successfully at: ${packageDir}`);
+    console.log(`🆔 Simulation UUID: ${uuid}`);
+    
+    return uuid;
   }
 
   async createBasicProject(config: BasicProjectConfig): Promise<void> {

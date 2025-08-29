@@ -256,6 +256,7 @@ export interface GenerationRequest {
 }
 
 export interface GenerationResult {
+  uuid?: string;
   analysis: SystemAnalysis;
   stateDesign: StateDesign;
   eventDesign: EventDesign;

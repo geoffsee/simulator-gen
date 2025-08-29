@@ -27,7 +27,7 @@ bun run main.ts
 ### Programmatic Usage
 
 ```typescript
-import { createLegalReviewMachine, startRealtimeFeed, LEGAL_EVENT_GENERATORS } from '@simulators/legal-sim';
+import { createLegalReviewMachine, startRealtimeFeed, LEGAL_EVENT_GENERATORS } from '@sim-generator/legal-sim';
 
 // Create a legal review machine
 const machine = createLegalReviewMachine({
@@ -65,8 +65,8 @@ The legal simulation consists of:
 ## Dependencies
 
 - `mobx-state-tree`: State management for complex legal data structures
-- `@simulators/lib`: Core simulation framework
+- `@sim-generator/lib`: Core simulation framework
 
 ## Development
 
-This package is part of the simulators monorepo and uses the shared simulation framework from `@simulators/lib`.
+This package is part of the simulators monorepo and uses the shared simulation framework from `@sim-generator/lib`.

@@ -15,7 +15,7 @@ import {
   clamp01,
   daysFromNow,
   startRealtimeFeed
-} from '../../lib/src/lib.js';
+} from '@sim-generator/lib';
 
 // ---------- Legal Domain Types ----------
 

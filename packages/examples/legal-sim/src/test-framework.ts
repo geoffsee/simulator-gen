@@ -7,8 +7,8 @@ import {
   LEGAL_EVENT_GENERATORS, 
   startRealtimeFeed,
   LegalReviewStateMachine 
-} from './legal-sim-framework.js';
-import { handleExit } from '../../lib/src/lib.js';
+} from './legal-sim-framework';
+import { handleExit } from '../../../lib/src/lib.js';
 
 console.log('Testing the new framework-based legal simulation...\n');
 

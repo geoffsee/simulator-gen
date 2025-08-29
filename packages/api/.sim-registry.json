@@ -1,0 +1,620 @@
+{
+  "b76ba620-c04b-42b0-b7d5-99d35686a25f": {
+    "uuid": "b76ba620-c04b-42b0-b7d5-99d35686a25f",
+    "name": "test-uuid-simulation",
+    "description": "A simple test simulation for UUID verification",
+    "createdAt": "2025-08-29T16:27:42.436Z",
+    "outputDir": "/tmp/test-simulations",
+    "simulationPath": "/tmp/test-simulations/test-uuid-simulation",
+    "template": "generic",
+    "status": "error",
+    "generationResult": {
+      "analysis": {
+        "entities": [
+          {
+            "name": "System",
+            "description": "Main system entity",
+            "attributes": [
+              {
+                "name": "id",
+                "type": "string",
+                "optional": false,
+                "description": "Unique identifier"
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "optional": false,
+                "description": "Current status"
+              },
+              {
+                "name": "createdAt",
+                "type": "date",
+                "optional": false,
+                "description": "Creation timestamp"
+              }
+            ],
+            "role": "primary"
+          }
+        ],
+        "processes": [
+          {
+            "name": "Main Process",
+            "description": "Primary system process",
+            "trigger": "System initialization or external event",
+            "steps": [
+              {
+                "name": "Initialize",
+                "description": "Set up initial state"
+              },
+              {
+                "name": "Process",
+                "description": "Execute main logic"
+              },
+              {
+                "name": "Complete",
+                "description": "Finalize and cleanup"
+              }
+            ],
+            "outcomes": [
+              "Success",
+              "Failure",
+              "Pending"
+            ]
+          }
+        ],
+        "relationships": [],
+        "constraints": [
+          {
+            "type": "business-rule",
+            "description": "System must maintain data consistency",
+            "enforcementLevel": "strict"
+          }
+        ],
+        "systemType": "generic",
+        "complexity": "moderate",
+        "recommendedTemplate": "generic"
+      },
+      "stateDesign": {
+        "states": [
+          {
+            "name": "Initial",
+            "description": "Initial state in the system",
+            "type": "initial",
+            "properties": [
+              {
+                "name": "enteredAt",
+                "type": "Date",
+                "defaultValue": "new Date()",
+                "description": "When this state was entered"
+              },
+              {
+                "name": "attempts",
+                "type": "number",
+                "defaultValue": 0,
+                "description": "Number of attempts in this state"
+              }
+            ],
+            "validationRules": [],
+            "entryActions": [
+              "log('Entered Initial state')"
+            ],
+            "exitActions": [
+              "log('Exiting Initial state')"
+            ]
+          },
+          {
+            "name": "Processing",
+            "description": "Processing state in the system",
+            "type": "processing",
+            "properties": [
+              {
+                "name": "enteredAt",
+                "type": "Date",
+                "defaultValue": "new Date()",
+                "description": "When this state was entered"
+              },
+              {
+                "name": "attempts",
+                "type": "number",
+                "defaultValue": 0,
+                "description": "Number of attempts in this state"
+              },
+              {
+                "name": "progress",
+                "type": "number",
+                "defaultValue": 0,
+                "description": "Processing progress (0-100)"
+              },
+              {
+                "name": "currentTask",
+                "type": "string",
+                "description": "Current task being processed"
+              }
+            ],
+            "validationRules": [],
+            "entryActions": [
+              "log('Entered Processing state')"
+            ],
+            "exitActions": [
+              "log('Exiting Processing state')"
+            ]
+          },
+          {
+            "name": "Complete",
+            "description": "Complete state in the system",
+            "type": "final",
+            "properties": [
+              {
+                "name": "enteredAt",
+                "type": "Date",
+                "defaultValue": "new Date()",
+                "description": "When this state was entered"
+              },
+              {
+                "name": "attempts",
+                "type": "number",
+                "defaultValue": 0,
+                "description": "Number of attempts in this state"
+              }
+            ],
+            "validationRules": [],
+            "entryActions": [
+              "log('Entered Complete state')"
+            ],
+            "exitActions": [
+              "log('Exiting Complete state')"
+            ]
+          },
+          {
+            "name": "Error",
+            "description": "Error state for handling failures",
+            "type": "error",
+            "properties": [
+              {
+                "name": "errorMessage",
+                "type": "string",
+                "description": "Error description"
+              },
+              {
+                "name": "errorCode",
+                "type": "string",
+                "description": "Error code"
+              }
+            ],
+            "validationRules": [],
+            "entryActions": [
+              "logError('System error occurred')"
+            ],
+            "exitActions": []
+          }
+        ],
+        "transitions": [
+          {
+            "from": "Initial",
+            "to": "Processing",
+            "trigger": "proceed_from_initial",
+            "conditions": [],
+            "actions": [
+              "updateProgress('Processing')"
+            ],
+            "probability": 0.8
+          },
+          {
+            "from": "Processing",
+            "to": "Complete",
+            "trigger": "proceed_from_processing",
+            "conditions": [],
+            "actions": [
+              "updateProgress('Complete')"
+            ],
+            "probability": 0.8
+          },
+          {
+            "from": "Complete",
+            "to": "Error",
+            "trigger": "proceed_from_complete",
+            "conditions": [],
+            "actions": [
+              "updateProgress('Error')"
+            ],
+            "probability": 0.8
+          },
+          {
+            "from": "Initial",
+            "to": "Error",
+            "trigger": "error_occurred",
+            "conditions": [
+              "hasError()"
+            ],
+            "actions": [
+              "handleError()"
+            ],
+            "probability": 0.1
+          },
+          {
+            "from": "Processing",
+            "to": "Error",
+            "trigger": "error_occurred",
+            "conditions": [
+              "hasError()"
+            ],
+            "actions": [
+              "handleError()"
+            ],
+            "probability": 0.1
+          },
+          {
+            "from": "Complete",
+            "to": "Error",
+            "trigger": "error_occurred",
+            "conditions": [
+              "hasError()"
+            ],
+            "actions": [
+              "handleError()"
+            ],
+            "probability": 0.1
+          }
+        ],
+        "initialState": "Initial",
+        "finalStates": [
+          "Complete"
+        ],
+        "stateGroups": []
+      },
+      "eventDesign": {
+        "eventTypes": [
+          {
+            "name": "start",
+            "description": "start event in the generic system",
+            "category": "system",
+            "payload": [
+              {
+                "name": "id",
+                "type": "string",
+                "description": "Event ID"
+              },
+              {
+                "name": "timestamp",
+                "type": "string",
+                "description": "Event timestamp"
+              }
+            ],
+            "frequency": "rare",
+            "priority": 3,
+            "triggers": [
+              "user_action_start",
+              "system_trigger_start"
+            ]
+          },
+          {
+            "name": "process",
+            "description": "process event in the generic system",
+            "category": "system",
+            "payload": [
+              {
+                "name": "id",
+                "type": "string",
+                "description": "Event ID"
+              },
+              {
+                "name": "timestamp",
+                "type": "string",
+                "description": "Event timestamp"
+              },
+              {
+                "name": "data",
+                "type": "object",
+                "description": "Event data"
+              }
+            ],
+            "frequency": "frequent",
+            "priority": 2,
+            "triggers": [
+              "user_action_process",
+              "system_trigger_process"
+            ]
+          },
+          {
+            "name": "complete",
+            "description": "complete event in the generic system",
+            "category": "system",
+            "payload": [
+              {
+                "name": "id",
+                "type": "string",
+                "description": "Event ID"
+              },
+              {
+                "name": "timestamp",
+                "type": "string",
+                "description": "Event timestamp"
+              }
+            ],
+            "frequency": "rare",
+            "priority": 3,
+            "triggers": [
+              "user_action_complete",
+              "system_trigger_complete"
+            ]
+          },
+          {
+            "name": "error",
+            "description": "error event in the generic system",
+            "category": "error",
+            "payload": [
+              {
+                "name": "id",
+                "type": "string",
+                "description": "Event ID"
+              },
+              {
+                "name": "timestamp",
+                "type": "string",
+                "description": "Event timestamp"
+              },
+              {
+                "name": "error",
+                "type": "string",
+                "description": "Error message"
+              }
+            ],
+            "frequency": "very-rare",
+            "priority": 4,
+            "triggers": [
+              "user_action_error",
+              "system_trigger_error"
+            ]
+          }
+        ],
+        "eventGenerators": [
+          {
+            "eventType": "start",
+            "generationLogic": {
+              "type": "random",
+              "parameters": {
+                "minInterval": 10000,
+                "maxInterval": 30000,
+                "probability": 0.2
+              }
+            },
+            "constraints": [
+              {
+                "type": "frequency",
+                "value": "rare",
+                "description": "Generate with rare frequency"
+              }
+            ]
+          },
+          {
+            "eventType": "process",
+            "generationLogic": {
+              "type": "random",
+              "parameters": {
+                "minInterval": 1000,
+                "maxInterval": 3000,
+                "probability": 0.6
+              }
+            },
+            "constraints": [
+              {
+                "type": "frequency",
+                "value": "frequent",
+                "description": "Generate with frequent frequency"
+              }
+            ]
+          },
+          {
+            "eventType": "complete",
+            "generationLogic": {
+              "type": "random",
+              "parameters": {
+                "minInterval": 10000,
+                "maxInterval": 30000,
+                "probability": 0.2
+              }
+            },
+            "constraints": [
+              {
+                "type": "frequency",
+                "value": "rare",
+                "description": "Generate with rare frequency"
+              }
+            ]
+          },
+          {
+            "eventType": "error",
+            "generationLogic": {
+              "type": "random",
+              "parameters": {
+                "minInterval": 30000,
+                "maxInterval": 60000,
+                "probability": 0.1
+              }
+            },
+            "constraints": [
+              {
+                "type": "frequency",
+                "value": "very-rare",
+                "description": "Generate with very-rare frequency"
+              }
+            ]
+          }
+        ],
+        "eventHandlers": [
+          {
+            "eventType": "start",
+            "handlerName": "handleStart",
+            "actions": [
+              {
+                "type": "logMessage",
+                "parameters": {
+                  "message": "Processing start event"
+                }
+              },
+              {
+                "type": "updateState",
+                "parameters": {
+                  "property": "lastEvent",
+                  "value": "start"
+                }
+              }
+            ],
+            "stateTransitions": []
+          },
+          {
+            "eventType": "process",
+            "handlerName": "handleProcess",
+            "actions": [
+              {
+                "type": "logMessage",
+                "parameters": {
+                  "message": "Processing process event"
+                }
+              },
+              {
+                "type": "updateState",
+                "parameters": {
+                  "property": "lastEvent",
+                  "value": "process"
+                }
+              }
+            ],
+            "stateTransitions": [
+              "Processing -> Complete"
+            ]
+          },
+          {
+            "eventType": "complete",
+            "handlerName": "handleComplete",
+            "actions": [
+              {
+                "type": "logMessage",
+                "parameters": {
+                  "message": "Processing complete event"
+                }
+              },
+              {
+                "type": "updateState",
+                "parameters": {
+                  "property": "lastEvent",
+                  "value": "complete"
+                }
+              }
+            ],
+            "stateTransitions": [
+              "Complete -> Error"
+            ]
+          },
+          {
+            "eventType": "error",
+            "handlerName": "handleError",
+            "actions": [
+              {
+                "type": "logMessage",
+                "parameters": {
+                  "message": "Processing error event"
+                }
+              },
+              {
+                "type": "updateState",
+                "parameters": {
+                  "property": "lastEvent",
+                  "value": "error"
+                }
+              }
+            ],
+            "stateTransitions": [
+              "Initial -> Error",
+              "Processing -> Error",
+              "Complete -> Error"
+            ]
+          }
+        ],
+        "eventFlows": [
+          {
+            "name": "BasicFlow",
+            "description": "Basic event flow through the system",
+            "startEvent": "start",
+            "endEvent": "error",
+            "steps": [
+              {
+                "eventType": "start",
+                "conditions": [],
+                "nextSteps": [
+                  "process",
+                  "complete",
+                  "error"
+                ]
+              },
+              {
+                "eventType": "process",
+                "conditions": [],
+                "nextSteps": [
+                  "start",
+                  "complete",
+                  "error"
+                ]
+              },
+              {
+                "eventType": "complete",
+                "conditions": [],
+                "nextSteps": [
+                  "start",
+                  "process",
+                  "error"
+                ]
+              },
+              {
+                "eventType": "error",
+                "conditions": [],
+                "nextSteps": [
+                  "start",
+                  "process",
+                  "complete"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "package.json",
+          "content": "{\n  \"name\": \"TestUuidSimulation\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Generated simulation: test-uuid-simulation\",\n  \"main\": \"dist/index.js\",\n  \"module\": \"src/index.ts\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"dev\": \"tsx src/index.ts\",\n    \"start\": \"node dist/index.js\",\n    \"test\": \"bun test\"\n  },\n  \"dependencies\": {\n    \"../../lib\": \"workspace:*\"\n  },\n  \"devDependencies\": {\n    \"@types/bun\": \"latest\",\n    \"tsx\": \"^4.0.0\",\n    \"typescript\": \"^5.0.0\"\n  }\n}",
+          "type": "package-json"
+        },
+        {
+          "path": "src/index.ts",
+          "content": "/**\n * TestUuidSimulation - Generated Simulation\n * Generated simulation: test-uuid-simulation\n */\n\nimport { createSimulation, Event } from '../../lib/src/lib.js';\nimport { TestUuidSimulationState, TestUuidSimulationEvent, TestUuidSimulationEventType } from './types.js';\nimport { EVENT_GENERATORS } from './event-generators.js';\n\n// Create the simulation\nconst simulation = createSimulation<TestUuidSimulationState, TestUuidSimulationEvent>({\n  initialState: 'Initial',\n  allowedTransitions: {\n    \n    'Initial': [{{#to}}'{{.}}', {{/to}}],\n    \n    'Processing': [{{#to}}'{{.}}', {{/to}}],\n    \n    'Complete': [{{#to}}'{{.}}', {{/to}}],\n    \n    'Initial': [{{#to}}'{{.}}', {{/to}}],\n    \n    'Processing': [{{#to}}'{{.}}', {{/to}}],\n    \n    'Complete': [{{#to}}'{{.}}'{{/to}}],\n    \n  },\n  handleEvent: (event: TestUuidSimulationEvent) => {\n    console.log(`Processing event: ${event.type}`, event);\n    // Event handling logic will be generated here\n  },\n  eventGenerators: EVENT_GENERATORS\n});\n\n// Export for use\nexport { simulation };\nexport * from './types.js';\nexport * from './event-generators.js';\n\n// Start simulation if running directly\nif (import.meta.main) {\n  console.log('Starting TestUuidSimulation simulation...');\n  simulation.start({ \n    minInterval: 1000, \n    maxInterval: 3000,\n    enableLogging: true\n  });\n  \n  // Handle graceful shutdown\n  process.on('SIGINT', () => {\n    console.log('\\nStopping simulation...');\n    simulation.stop();\n    process.exit(0);\n  });\n}",
+          "type": "typescript"
+        },
+        {
+          "path": "src/types.ts",
+          "content": "/**\n * Type definitions for TestUuidSimulation\n */\n\nimport { Event } from '../../lib/src/lib.js';\n\n// State type\nexport type TestUuidSimulationState = 'Initial' | 'Processing' | 'Complete' | 'Error';\n\n// Event types\nexport enum TestUuidSimulationEventType {\n  \n  START = 'start',\n  \n  PROCESS = 'process',\n  \n  COMPLETE = 'complete',\n  \n  ERROR = 'error',\n  \n}\n\n// Event interface\nexport interface TestUuidSimulationEvent extends Event<TestUuidSimulationEventType> {\n  // Additional event properties can be added here\n}",
+          "type": "typescript"
+        },
+        {
+          "path": "src/event-generators.ts",
+          "content": "/**\n * Event generators for TestUuidSimulation\n */\n\nimport { EventGenerator } from '../../lib/src/lib.js';\nimport { TestUuidSimulationEvent, TestUuidSimulationEventType } from './types.js';\n\nexport const EVENT_GENERATORS: EventGenerator<TestUuidSimulationEvent>[] = [\n  \n  // start generator\n  () => ({\n    id: 'evt-' + Math.random().toString(36).substr(2, 9),\n    type: TestUuidSimulationEventType.START,\n    timestamp: new Date().toISOString(),\n    payload: {\n      {{#payload}}\n      start: {{value}},\n      {{/payload}}\n    }\n  }),\n  \n  // process generator\n  () => ({\n    id: 'evt-' + Math.random().toString(36).substr(2, 9),\n    type: TestUuidSimulationEventType.PROCESS,\n    timestamp: new Date().toISOString(),\n    payload: {\n      {{#payload}}\n      process: {{value}},\n      {{/payload}}\n    }\n  }),\n  \n  // complete generator\n  () => ({\n    id: 'evt-' + Math.random().toString(36).substr(2, 9),\n    type: TestUuidSimulationEventType.COMPLETE,\n    timestamp: new Date().toISOString(),\n    payload: {\n      {{#payload}}\n      complete: {{value}},\n      {{/payload}}\n    }\n  }),\n  \n  // error generator\n  () => ({\n    id: 'evt-' + Math.random().toString(36).substr(2, 9),\n    type: TestUuidSimulationEventType.ERROR,\n    timestamp: new Date().toISOString(),\n    payload: {\n      {{#payload}}\n      error: {{value}},\n      {{/payload}}\n    }\n  }),\n  \n];",
+          "type": "typescript"
+        },
+        {
+          "path": "tsconfig.json",
+          "content": "{\n  \"extends\": \"../../tsconfig.json\",\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\"\n  },\n  \"include\": [\n    \"src/**/*\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"dist\"\n  ]\n}",
+          "type": "json"
+        },
+        {
+          "path": "README.md",
+          "content": "# TestUuidSimulation\n\nGenerated simulation: test-uuid-simulation\n\n## Installation\n\n```bash\nbun install\n```\n\n## Usage\n\n```bash\n# Run in development mode\nbun run dev\n\n# Build for production\nbun run build\n\n# Run built version\nbun start\n```\n\n## Generated Structure\n\nThis simulation was generated using the sim-generator CLI tool and includes:\n\n- **State Machine**: Manages simulation states and transitions\n- **Event System**: Generates and processes domain-specific events  \n- **Type Safety**: Full TypeScript support with generated types\n- **Framework Integration**: Built on the reusable simulation framework\n\n## Customization\n\nYou can customize the simulation by:\n\n1. Modifying event generators in `src/event-generators.ts`\n2. Updating state transition logic in `src/index.ts`\n3. Adding new event types in `src/types.ts`\n4. Adjusting simulation timing and parameters\n\nGenerated at: 2025-08-29T16:27:42.435Z\n",
+          "type": "markdown"
+        }
+      ],
+      "simulationName": "test-uuid-simulation",
+      "outputDir": "/tmp/test-simulations",
+      "uuid": "b76ba620-c04b-42b0-b7d5-99d35686a25f"
+    },
+    "lastExecuted": "2025-08-29T16:27:42.441Z"
+  }
+}

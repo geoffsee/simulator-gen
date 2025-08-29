@@ -1,9 +1,0 @@
-{
-  "name": "@simulators/legal-sim",
-  "scripts": {
-    "start": ""
-  },
-  "devDependencies": {
-    "mobx-state-tree": "^7.0.2"
-  }
-}

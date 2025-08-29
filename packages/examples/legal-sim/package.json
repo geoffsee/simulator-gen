@@ -1,0 +1,12 @@
+{
+  "name": "@sim-generator/legal-sim",
+  "scripts": {
+    "start": ""
+  },
+  "dependencies": {
+    "@sim-generator/lib": "workspace:*"
+  },
+  "devDependencies": {
+    "mobx-state-tree": "^7.0.2"
+  }
+}

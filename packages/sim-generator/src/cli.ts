@@ -32,7 +32,7 @@ export class SimulationGeneratorCLI {
     this.generator = new SimulationGenerator();
   }
 
-  async generate(description: string, options: CLIOptions): Promise<void> {
+  async generate(description: string, options: CLIOptions): Promise<string | null> {
     try {
       this.logger.setVerbose(options.verbose || false);
       
@@ -81,18 +81,21 @@ export class SimulationGeneratorCLI {
         for (const file of generationResult.files) {
           console.log(`  ${file.path}`);
         }
-        return;
+        return null;
       }
 
       // Actually generate the files
-      await this.generator.createSimulationPackage(generationResult);
+      const uuid = await this.generator.createSimulationPackage(generationResult, enhancedDescription, templateName);
 
       this.logger.info(`\n✅ Simulation "${simulationName}" generated successfully!`);
+      this.logger.info(`🆔 UUID: ${uuid}`);
       this.logger.info(`📁 Location: ${join(outputDir, simulationName)}`);
       this.logger.info('\nNext steps:');
       this.logger.info(`  cd ${simulationName}`);
       this.logger.info(`  bun install`);
       this.logger.info(`  bun run dev`);
+      
+      return uuid;
 
     } catch (error) {
       this.logger.error('Generation failed:', error);

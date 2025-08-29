@@ -1,5 +1,5 @@
-import { createLegalReviewMachine, startRealtimeFeed, LEGAL_EVENT_GENERATORS } from "./src/legal-sim-framework.js";
-import { handleExit } from "../lib/src/lib.js";
+import { createLegalReviewMachine, startRealtimeFeed, LEGAL_EVENT_GENERATORS } from "./src/legal-sim-framework";
+import { handleExit } from "../../lib";
 
 const machine = createLegalReviewMachine({
   file: { matterId: "MAT-2025-VA-042", clientName: "Blue Ridge Tools, Inc.", jurisdiction: "US-EDVA", practiceArea: "Commercial" },

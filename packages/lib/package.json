@@ -1,5 +1,5 @@
 {
-  "name": "@simulators/lib",
+  "name": "@sim-generator/lib",
   "type": "module",
   "main": "src/lib.ts"
 }
