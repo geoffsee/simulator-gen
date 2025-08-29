@@ -127,18 +127,6 @@ simulation.start({
 simulation.stop();
 ```
 
-## Legal Simulation (`packages/legal-sim`)
-
-The legal simulation has been reimplemented using the generic framework while maintaining all its original functionality:
-
-### Features
-- **Legal Phases**: 12-phase workflow from Initial to Complete
-- **Event Types**: 9 different legal event types (emails, documents, hearings, etc.)
-- **Risk Assessment**: Multi-dimensional risk tracking (confidentiality, deadline, adversarial, compliance)
-- **Task Management**: Automatic task generation based on events
-- **Evidence Tracking**: Document and communication evidence management
-- **Deadline Management**: Hard and soft deadline tracking with notifications
-
 ## Simulation Generator (`packages/sim-generator`)
 
 An AI-powered CLI tool that generates complete simulation packages from natural language descriptions:
@@ -225,3 +213,16 @@ The framework is designed to support additional simulation domains:
 - **Visualization**: Real-time simulation visualization
 - **Analytics**: Advanced metrics and reporting
 - **Networking**: Multi-node distributed simulations
+
+
+## Example: Legal Simulation (`packages/example/legal-sim`)
+
+The legal simulation has been reimplemented using the generic framework while maintaining all its original functionality:
+
+### Features
+- **Legal Phases**: 12-phase workflow from Initial to Complete
+- **Event Types**: 9 different legal event types (emails, documents, hearings, etc.)
+- **Risk Assessment**: Multi-dimensional risk tracking (confidentiality, deadline, adversarial, compliance)
+- **Task Management**: Automatic task generation based on events
+- **Evidence Tracking**: Document and communication evidence management
+- **Deadline Management**: Hard and soft deadline tracking with notifications
