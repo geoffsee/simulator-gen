@@ -1,0 +1,5 @@
+{
+  "name": "@simulators/lib",
+  "type": "module",
+  "main": "src/lib.ts"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "sim-generator",
+  "version": "1.0.0",
+  "description": "AI-powered simulation generator CLI using OpenAI agents",
+  "main": "dist/index.js",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "sim-generate": "./index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx index.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@openai/agents": "^0.1.0"
+  }
+}

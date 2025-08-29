@@ -1,0 +1,18 @@
+{
+  "name": "simulators",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/client",
+    "packages/legal-sim",
+    "packages/sim-generator",
+    "packages/lib"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

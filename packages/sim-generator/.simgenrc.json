@@ -1,0 +1,18 @@
+{
+  "defaultTemplate": "generic",
+  "outputDir": "./generated-simulations",
+  "agentConfig": {
+    "model": "gpt-4",
+    "temperature": 0.3
+  },
+  "codeStyle": {
+    "useSemicolons": true,
+    "quotes": "single",
+    "indentSize": 2
+  },
+  "features": {
+    "includeTests": true,
+    "includeDocumentation": true,
+    "includeExamples": true
+  }
+}
