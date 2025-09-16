@@ -41,6 +41,8 @@ The framework provides the following core components:
 
 ### Usage Example
 
+> Note: This is not a game engine. Gamification can be thought of as a medium for simulation.
+
 ```typescript
 import { 
   BaseStateMachine, 
@@ -149,59 +151,6 @@ bun run packages/sim-generator/index.ts generate "IoT sensor network" --template
 bun run packages/sim-generator/index.ts "Hospital workflow" --interactive
 ```
 
-## Web Client (`packages/client`)
-
-A React-based web client providing interfaces for simulation interaction and testing:
-
-### Features
-- **API Testing Interface**: Interactive tool for testing simulation endpoints
-- **React-based UI**: Modern web interface with TypeScript
-- **Development Tools**: Hot reloading and development server
-- **Extensible Architecture**: Foundation for simulation dashboards
-
-### Usage
-```bash
-# Start development server
-cd packages/client && bun dev
-
-# Production build
-cd packages/client && bun start
-```
-
-## Framework Benefits
-
-### 1. **Reusability**
-- Core simulation logic can be reused across different domains
-- Consistent patterns for state management and event processing
-- Reduced code duplication
-
-### 2. **Maintainability**
-- Clear separation between framework and domain-specific code
-- Standardized interfaces and patterns
-- Easier testing and debugging
-
-### 3. **Extensibility**
-- Easy to add new simulation domains
-- Framework can be extended without breaking existing implementations
-- Plugin-like architecture for domain-specific features
-
-### 4. **Performance**
-- Lightweight implementation without heavy dependencies
-- Efficient event processing and state management
-- Configurable timing and resource usage
-
-## Testing
-
-Both the framework and legal simulation include comprehensive testing:
-
-```bash
-# Test the framework-based legal simulation
-bun run packages/legal-sim/src/test-framework.ts
-
-# Run the main legal simulation
-bun run packages/legal-sim/main.ts
-```
-
 ## Potential Domains
 - **Medical Workflow Simulation**: Patient care processes, treatment protocols
 - **Manufacturing Process Simulation**: Production lines, quality control
@@ -213,16 +162,3 @@ The framework is designed to support additional simulation domains:
 - **Visualization**: Real-time simulation visualization
 - **Analytics**: Advanced metrics and reporting
 - **Networking**: Multi-node distributed simulations
-
-
-## Example: Legal Simulation (`packages/example/legal-sim`)
-
-The legal simulation has been reimplemented using the generic framework while maintaining all its original functionality:
-
-### Features
-- **Legal Phases**: 12-phase workflow from Initial to Complete
-- **Event Types**: 9 different legal event types (emails, documents, hearings, etc.)
-- **Risk Assessment**: Multi-dimensional risk tracking (confidentiality, deadline, adversarial, compliance)
-- **Task Management**: Automatic task generation based on events
-- **Evidence Tracking**: Document and communication evidence management
-- **Deadline Management**: Hard and soft deadline tracking with notifications

@@ -2,7 +2,7 @@
   "name": "sim-generator",
   "module": "index.ts",
   "type": "module",
-  "private": true,
+  "private": false,
   "workspaces": [
     "packages/lib",
     "packages/api",
