@@ -1,6 +1,6 @@
 # Simulators Framework
 
-This repository contains a generic simulation framework and domain-specific implementations.
+This repository contains a generic simulation framework and domain-specific implementations. It uses the OpenAI agents SDK to generate the code assets.
 The project has been restructured to extract common simulation patterns into a reusable framework that can be applied to different domains while maintaining the specific functionality of existing simulations.
 
 ## Overview
