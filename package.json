@@ -7,7 +7,8 @@
     "packages/lib",
     "packages/api",
     "packages/sim-generator",
-    "packages/examples/legal-sim"
+    "packages/examples/legal-sim",
+    "simulations/*"
   ],
   "devDependencies": {
     "@types/bun": "latest"

@@ -8,7 +8,8 @@ import {
   EventFlowDefinition,
   EventCategory,
   EventFrequency,
-  EventPriority
+  EventPriority,
+  SystemType
 } from './types.js';
 
 export class EventDesigner {
@@ -42,7 +43,24 @@ export class EventDesigner {
   }
 
   private createBasicEventDesign(request: EventDesignRequest): EventDesign {
-    const eventTypes: EventTypeDefinition[] = request.template.commonEvents.map((eventName, index) => ({
+    // Decide event names based on system type
+    let eventNames = request.template.commonEvents;
+    if (request.analysis.systemType === SystemType.FINANCIAL) {
+      eventNames = [
+        'donation_received',
+        'pac_contribution',
+        'fec_report_filed',
+        'state_limit_breached',
+        'matching_funds_applied',
+        'refund_issued',
+        'transfer_between_committees',
+        'ad_spend_reported',
+        'compliance_review_passed',
+        'audit_flagged'
+      ];
+    }
+
+    const eventTypes: EventTypeDefinition[] = eventNames.map((eventName, index) => ({
       name: eventName,
       description: `${eventName} event in the ${request.analysis.systemType} system`,
       category: this.inferEventCategory(eventName),
@@ -190,6 +208,71 @@ export class EventDesigner {
     ];
 
     const lower = eventName.toLowerCase();
+
+    // Campaign finance specific payloads
+    if (lower.includes('donation') || lower.includes('contribution')) {
+      basePayload.push(
+        { name: 'amount', type: 'number', description: 'Contribution amount (USD)' },
+        { name: 'donorType', type: 'string', description: 'individual | pac | party | other' },
+        { name: 'jurisdiction', type: 'string', description: 'federal | state | local' },
+        { name: 'committeeId', type: 'string', description: 'Committee identifier' },
+        { name: 'candidateId', type: 'string', description: 'Candidate identifier' }
+      );
+    }
+    if (lower.includes('fec') || lower.includes('report')) {
+      basePayload.push(
+        { name: 'periodStart', type: 'string', description: 'Reporting period start' },
+        { name: 'periodEnd', type: 'string', description: 'Reporting period end' },
+        { name: 'totalRaised', type: 'number', description: 'Total raised in period' },
+        { name: 'totalSpent', type: 'number', description: 'Total spent in period' }
+      );
+    }
+    if ((lower.includes('limit') && (lower.includes('breach') || lower.includes('breached') || lower.includes('exceed')))) {
+      basePayload.push(
+        { name: 'limit', type: 'number', description: 'Applicable contribution limit' },
+        { name: 'amount', type: 'number', description: 'Contribution amount that exceeded the limit' },
+        { name: 'jurisdiction', type: 'string', description: 'federal | state | local' }
+      );
+    }
+    if (lower.includes('match')) {
+      basePayload.push(
+        { name: 'matchRate', type: 'number', description: 'Matching funds rate' },
+        { name: 'amountMatched', type: 'number', description: 'Amount matched' }
+      );
+    }
+    if (lower.includes('ad') && lower.includes('spend')) {
+      basePayload.push(
+        { name: 'mediaType', type: 'string', description: 'tv | radio | digital | print' },
+        { name: 'market', type: 'string', description: 'Media market' },
+        { name: 'amount', type: 'number', description: 'Spend amount' }
+      );
+    }
+    if (lower.includes('audit')) {
+      basePayload.push(
+        { name: 'reason', type: 'string', description: 'Audit reason or flag' }
+      );
+    }
+    if (lower.includes('transfer')) {
+      basePayload.push(
+        { name: 'fromCommitteeId', type: 'string', description: 'Source committee' },
+        { name: 'toCommitteeId', type: 'string', description: 'Destination committee' },
+        { name: 'amount', type: 'number', description: 'Transfer amount' }
+      );
+    }
+    if (lower.includes('compliance')) {
+      basePayload.push(
+        { name: 'status', type: 'string', description: 'passed | failed | needs_review' },
+        { name: 'reviewer', type: 'string', description: 'Compliance reviewer' }
+      );
+    }
+    if (lower.includes('refund')) {
+      basePayload.push(
+        { name: 'amount', type: 'number', description: 'Refund amount' },
+        { name: 'reason', type: 'string', description: 'Refund reason' }
+      );
+    }
+
+    // Generic payload enrichments
     if (lower.includes('user') || lower.includes('client')) {
       basePayload.push({ name: 'userId', type: 'string', description: 'User identifier' });
     }

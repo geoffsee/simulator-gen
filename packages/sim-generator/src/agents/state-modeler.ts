@@ -1,4 +1,5 @@
-import { Agent, run } from '@openai/agents';
+import { Agent, run, tool } from '@openai/agents';
+import { z } from 'zod';
 import {
   StateDesignRequest,
   StateDesign,
@@ -418,65 +419,62 @@ export class StateModeler {
   }
 
   private createStateIdentificationTool() {
-    return {
+    return tool({
       name: 'identifyStates',
       description: 'Identify possible states from system analysis',
-      parameters: {
-        type: 'object',
-        properties: {
-          states: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                name: { type: 'string' },
-                description: { type: 'string' },
-                type: { type: 'string' }
-              }
-            }
-          }
-        }
+      parameters: z.object({
+        states: z.array(z.object({
+          name: z.string(),
+          description: z.string(),
+          type: z.string()
+        }))
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          statesIdentified: input.states.length,
+          states: input.states
+        });
       }
-    };
+    });
   }
 
   private createTransitionDesignTool() {
-    return {
+    return tool({
       name: 'designTransitions',
       description: 'Design state transitions',
-      parameters: {
-        type: 'object',
-        properties: {
-          transitions: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                from: { type: 'string' },
-                to: { type: 'string' },
-                trigger: { type: 'string' }
-              }
-            }
-          }
-        }
+      parameters: z.object({
+        transitions: z.array(z.object({
+          from: z.string(),
+          to: z.string(),
+          trigger: z.string()
+        }))
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          transitionsDesigned: input.transitions.length,
+          transitions: input.transitions
+        });
       }
-    };
+    });
   }
 
   private createValidationTool() {
-    return {
+    return tool({
       name: 'validateStateDesign',
       description: 'Validate state machine design',
-      parameters: {
-        type: 'object',
-        properties: {
-          isValid: { type: 'boolean' },
-          issues: {
-            type: 'array',
-            items: { type: 'string' }
-          }
-        }
+      parameters: z.object({
+        isValid: z.boolean(),
+        issues: z.array(z.string())
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'validation_complete',
+          isValid: input.isValid,
+          issues: input.issues
+        });
       }
-    };
+    });
   }
 }

@@ -87,7 +87,7 @@ export class TemplateManager {
           'test': 'bun test'
         },
         dependencies: {
-          '../../lib': 'workspace:*'
+          '@sim-generator/lib': 'workspace:*'
         },
         devDependencies: {
           '@types/bun': 'latest',
@@ -101,8 +101,9 @@ export class TemplateManager {
  * {{description}}
  */
 
-import { createSimulation, Event } from '../../lib/src/lib.js';
-import { {{simulationName}}State, {{simulationName}}Event, {{simulationName}}EventType } from './types.js';
+import { createSimulation } from '@sim-generator/lib';
+import type { {{simulationName}}State, {{simulationName}}Event } from './types.js';
+import { {{simulationName}}EventType } from './types.js';
 import { EVENT_GENERATORS } from './event-generators.js';
 
 // Create the simulation
@@ -146,7 +147,7 @@ if (import.meta.main) {
  * Type definitions for {{simulationName}}
  */
 
-import { Event } from '../../lib/src/lib.js';
+import type { Event } from '@sim-generator/lib';
 
 // State type
 export type {{simulationName}}State = {{#states}}'{{name}}'{{#unless @last}} | {{/unless}}{{/states}};
@@ -167,8 +168,9 @@ export interface {{simulationName}}Event extends Event<{{simulationName}}EventTy
  * Event generators for {{simulationName}}
  */
 
-import { EventGenerator } from '../../lib/src/lib.js';
-import { {{simulationName}}Event, {{simulationName}}EventType } from './types.js';
+import type { EventGenerator } from '@sim-generator/lib';
+import type { {{simulationName}}Event } from './types.js';
+import { {{simulationName}}EventType } from './types.js';
 
 export const EVENT_GENERATORS: EventGenerator<{{simulationName}}Event>[] = [
   {{#eventGenerators}}

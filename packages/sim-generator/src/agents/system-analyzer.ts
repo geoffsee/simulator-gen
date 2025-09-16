@@ -1,4 +1,5 @@
-import { Agent, run } from '@openai/agents';
+import { Agent, run, tool } from '@openai/agents';
+import { z } from 'zod';
 import { 
   AnalysisRequest, 
   SystemAnalysis, 
@@ -219,6 +220,21 @@ export class SystemAnalyzer {
 
   private inferSystemType(description: string): SystemType {
     const lower = description.toLowerCase();
+
+    // Treat political campaign finance as a financial system
+    if (
+      lower.includes('campaign') ||
+      lower.includes('election') ||
+      lower.includes('donation') ||
+      lower.includes('contribution') ||
+      lower.includes('funding') ||
+      lower.includes('fundraise') ||
+      lower.includes('fec') ||
+      lower.includes('pac') ||
+      lower.includes('super pac')
+    ) {
+      return SystemType.FINANCIAL;
+    }
     
     if (lower.includes('game') || lower.includes('player') || lower.includes('score')) {
       return SystemType.GAME;
@@ -307,109 +323,108 @@ export class SystemAnalyzer {
   }
 
   private createEntityExtractionTool() {
-    return {
+    return tool({
       name: 'extractEntities',
       description: 'Extract entities from system description',
-      parameters: {
-        type: 'object',
-        properties: {
-          entities: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                name: { type: 'string' },
-                description: { type: 'string' },
-                role: { type: 'string' }
-              }
-            }
-          }
-        }
+      parameters: z.object({
+        entities: z.array(z.object({
+          name: z.string(),
+          description: z.string(),
+          role: z.enum(['primary', 'secondary', 'external', 'system'])
+        }))
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          entitiesFound: input.entities.length,
+          entities: input.entities
+        });
       }
-    };
+    });
   }
 
   private createProcessExtractionTool() {
-    return {
+    return tool({
       name: 'extractProcesses',
       description: 'Extract processes from system description',
-      parameters: {
-        type: 'object',
-        properties: {
-          processes: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                name: { type: 'string' },
-                description: { type: 'string' },
-                trigger: { type: 'string' }
-              }
-            }
-          }
-        }
+      parameters: z.object({
+        processes: z.array(z.object({
+          name: z.string(),
+          description: z.string(),
+          trigger: z.string()
+        }))
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          processesFound: input.processes.length,
+          processes: input.processes
+        });
       }
-    };
+    });
   }
 
   private createRelationshipExtractionTool() {
-    return {
+    return tool({
       name: 'extractRelationships',
       description: 'Extract relationships between entities',
-      parameters: {
-        type: 'object',
-        properties: {
-          relationships: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                from: { type: 'string' },
-                to: { type: 'string' },
-                type: { type: 'string' }
-              }
-            }
-          }
-        }
+      parameters: z.object({
+        relationships: z.array(z.object({
+          from: z.string(),
+          to: z.string(),
+          type: z.string()
+        }))
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          relationshipsFound: input.relationships.length,
+          relationships: input.relationships
+        });
       }
-    };
+    });
   }
 
   private createConstraintExtractionTool() {
-    return {
+    return tool({
       name: 'extractConstraints',
       description: 'Extract constraints and business rules',
-      parameters: {
-        type: 'object',
-        properties: {
-          constraints: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                type: { type: 'string' },
-                description: { type: 'string' },
-                enforcementLevel: { type: 'string' }
-              }
-            }
-          }
-        }
+      parameters: z.object({
+        constraints: z.array(z.object({
+          type: z.string(),
+          description: z.string(),
+          enforcementLevel: z.string()
+        }))
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          constraintsFound: input.constraints.length,
+          constraints: input.constraints
+        });
       }
-    };
+    });
   }
 
   private createClassificationTool() {
-    return {
+    return tool({
       name: 'classifySystem',
       description: 'Classify system type and complexity',
-      parameters: {
-        type: 'object',
-        properties: {
-          systemType: { type: 'string' },
-          complexity: { type: 'string' },
-          recommendedTemplate: { type: 'string' }
-        }
+      parameters: z.object({
+        systemType: z.string(),
+        complexity: z.string(),
+        recommendedTemplate: z.string()
+      }),
+      execute: async (input) => {
+        return JSON.stringify({
+          status: 'success',
+          classification: {
+            systemType: input.systemType,
+            complexity: input.complexity,
+            recommendedTemplate: input.recommendedTemplate
+          }
+        });
       }
-    };
+    });
   }
 }
